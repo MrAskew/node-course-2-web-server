@@ -2,6 +2,8 @@ const express = require('express');
 const hbs = require('hbs');
 const fs = require('fs');
 
+const port = process.env.PORT || 3000;
+
 //SETUP EXPRESS SERVER
 var app = express();
 
@@ -9,6 +11,7 @@ var app = express();
 hbs.registerPartials(__dirname + '/views/partials');
 app.set('view engine', 'hbs');
 
+//Logs everytime a webpage is visited
 app.use((req, res, next) => {
   var now = new Date().toString();
   var log = `${now}: ${req.method} ${req.url}`;
@@ -21,11 +24,12 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use((req, res, next) => {
-  res.render('maintenance.hbs', {
-    pageTitle: 'Maintenance Page'
-  });
-});
+//ROUTES ALL PAGES TO MAINTENANCE
+// app.use((req, res, next) => {
+//   res.render('maintenance.hbs', {
+//     pageTitle: 'Maintenance Page'
+//   });
+// });
 
 //EXPRESS STATIC MIDDLEWARE
 app.use(express.static(__dirname + '/public'));
@@ -60,6 +64,6 @@ app.get('/bad', (req, res) => {
 });
 
 //STARTS THE LISTENING ON LOCALHOST:3000
-app.listen(3000, () => {
-  console.log('Server is up on port 3000');
+app.listen(port, () => {
+  console.log(`Server is up on port ${port}`);
 });
